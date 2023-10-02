@@ -1,0 +1,13 @@
+{
+    "urls": [
+        {
+            "url": "https://example.webhook.office.com/DUMMY",
+            "resolver": "harbor",
+            "converter": "teams",
+            "renderer": "mustache"
+        },
+        {
+            "url": "https://example.com"
+        }
+    ]
+}
