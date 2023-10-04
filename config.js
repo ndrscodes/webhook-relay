@@ -14,25 +14,21 @@ if(path && fs.existsSync(path)){
 }
 
 if(process.env.WEBHOOK_URLS) {
-  data.urls = [...data.urls, process.env.WEBHOOK_URLS
+  data.urls = [...data.urls, ...process.env.WEBHOOK_URLS
     .split(',')
     .map((url, i) => ({
       url,
       resolver: process.env[`URL_${i}_RESOLVER`],
       converter: process.env[`URL_${i}_CONVERTER`],
-      resolver: process.env[`URL_${i}_RENDERER`]
+      renderer: process.env[`URL_${i}_RENDERER`]
     })
   )];
 }
 
 data.urls.forEach(url => {
-  try {
-    payloadConverter.getConverter(url.converter);
-    payloadConverter.getResolver(url.resolver);
-    payloadConverter.getRenderer(url.renderer);
-  } catch(e) {
-    throw new Error(e);
-  }
+  payloadConverter.getConverter(url.converter);
+  payloadConverter.getResolver(url.resolver);
+  payloadConverter.getRenderer(url.renderer);
 })
 
 if(process.env.PORT) {
