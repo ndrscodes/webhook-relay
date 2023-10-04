@@ -1,0 +1,8 @@
+node_modules
+config.sample.js
+Dockerfile
+LICENSE
+README.md
+.gitignore
+.dockerignore
+.git

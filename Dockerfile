@@ -1,15 +1,11 @@
-FROM node:lts-alpine
+FROM node:20.8.0-slim@sha256:c704ff2a5e27c3fc990418bf1f6c1b1ac6eb75471a7a2e2f192f401d211d2101
 
-RUN adduser -D relay && mkdir /app && chown relay /app
-COPY package.json package-lock.json /app/
-COPY index.js /app/
-COPY payloadConverter.js /app/
-COPY config.js /app/
-COPY renderers /app/
-COPY resolvers /app/
-COPY converters /app/
+RUN mkdir /app && apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends dumb-init && apt-get autoremove && apt-get clean
+COPY --chown=node:node package.json package-lock.json /app/
+COPY --chown=node:node . /app/
 WORKDIR /app/
-RUN npm install
-USER relay
+RUN npm install --omit=dev
+USER node
+ENV NODE_ENV production
 
-ENTRYPOINT [ "node", "index.js" ]
+ENTRYPOINT [ "dumb-init", "node", "index.js" ]
